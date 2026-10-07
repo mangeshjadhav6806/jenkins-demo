@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A modern, clean, and responsive Student Task Tracker to manage assignments, subjects, and priorities." />
+  <title>Student Task Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            <path d="M9 7h6"></path>
+            <path d="M9 11h6"></path>
+          </svg>
+        </div>
+        <div>
+          <h1>Student Task Tracker</h1>
+          <p class="subtitle">Organize your assignments, track priorities, and stay ahead</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="main-layout">
+      <!-- Left Column: Add Task & Stats -->
+      <aside class="sidebar">
+        <!-- Progress / Stats Card -->
+        <section class="card stats-card">
+          <div class="stats-header">
+            <h3>Overview</h3>
+            <span id="progress-percent" class="stat-badge">0%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar-fill"></div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <span class="stat-num" id="total-count">0</span>
+              <span class="stat-lbl">Total</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num text-warning" id="pending-count">0</span>
+              <span class="stat-lbl">Pending</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num text-success" id="completed-count">0</span>
+              <span class="stat-lbl">Done</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Task Creation Form -->
+        <section class="card form-card">
+          <h2>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            Add New Task
+          </h2>
+          <form id="task-form" autocomplete="off">
+            <div class="form-group">
+              <label for="task-title">Task / Assignment Name <span class="required">*</span></label>
+              <input
+                type="text"
+                id="task-title"
+                name="taskTitle"
+                placeholder="e.g., Chapter 4 Calculus exercises"
+                required
+                maxlength="100"
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="task-subject">Subject <span class="required">*</span></label>
+                <input
+                  type="text"
+                  id="task-subject"
+                  name="taskSubject"
+                  placeholder="e.g., Math, Physics, History"
+                  list="subject-suggestions"
+                  required
+                  maxlength="40"
+                />
+                <datalist id="subject-suggestions">
+                  <option value="Mathematics"></option>
+                  <option value="Computer Science"></option>
+                  <option value="Physics"></option>
+                  <option value="Chemistry"></option>
+                  <option value="Biology"></option>
+                  <option value="History"></option>
+                  <option value="English Literature"></option>
+                  <option value="Economics"></option>
+                </datalist>
+              </div>
+
+              <div class="form-group">
+                <label for="task-priority">Priority <span class="required">*</span></label>
+                <select id="task-priority" name="taskPriority" required>
+                  <option value="Low">🟢 Low</option>
+                  <option value="Medium" selected>🟡 Medium</option>
+                  <option value="High">🔴 High</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="task-due-date">Due Date <span class="optional">(optional)</span></label>
+              <input type="date" id="task-due-date" name="taskDueDate" />
+            </div>
+
+            <button type="submit" id="add-task-btn" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Add Task</span>
+            </button>
+          </form>
+        </section>
+      </aside>
+
+      <!-- Right Column: Task List & Controls -->
+      <section class="task-section">
+        <!-- Filter & Search Toolbar -->
+        <div class="card toolbar-card">
+          <div class="search-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="search-input" placeholder="Search tasks or subjects..." />
+            <button type="button" id="clear-search-btn" class="btn-icon hidden" title="Clear search">✕</button>
+          </div>
+
+          <div class="filter-controls">
+            <div class="status-filters" id="status-filters">
+              <button type="button" class="filter-btn active" data-filter="all">All</button>
+              <button type="button" class="filter-btn" data-filter="pending">Pending</button>
+              <button type="button" class="filter-btn" data-filter="completed">Completed</button>
+            </div>
+
+            <div class="priority-filter-wrapper">
+              <select id="priority-filter" title="Filter by priority">
+                <option value="all">All Priorities</option>
+                <option value="High">High Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="Low">Low Priority</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task List Container -->
+        <div class="task-list-header">
+          <h2 id="task-list-title">My Tasks</h2>
+          <span id="filtered-count-badge" class="count-badge">0 tasks</span>
+        </div>
+
+        <div id="tasks-container" class="task-grid">
+          <!-- Dynamic task cards will be injected here via JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state hidden">
+          <div class="empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h3 id="empty-title">No tasks found</h3>
+          <p id="empty-desc">Create your first task using the form to get started!</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
